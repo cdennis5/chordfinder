@@ -10,8 +10,16 @@ const blackNotes = ['', 'C#/Db', 'D#/Eb', '', 'F#/Gb', 'G#/Ab', 'A#/Bb'];
 
 function initPiano() {
     var canvas = document.getElementById("piano");
+
+    //DEBUG
+    canvas.addEventListener("mousemove", (e) => {
+        var coords = document.getElementById('coords');
+        coords.innerHTML = 'x: ' + e.x + ', y: ' + e.y;
+    });
+    //
+    
     canvas.width = pianoWidth;
-    canvas.height = pianoHeight
+    canvas.height = pianoHeight;
 
     if(whiteKeys.length == 0) {
         //Generate the values for the white keys
@@ -35,6 +43,39 @@ function initPiano() {
             y: e.clientY
         };
 
+        //since the black keys overlap the white keys, check if
+        //we clicked a black key first, then if we didn't, check
+        //if we clicked a white key
+        var haveSelectedKey = false;
+
+        blackKeys.forEach(key => {
+            if(isIntersect(pos, key)) {
+                haveSelectedKey = true;
+
+                if(key.selected) {
+                    key.selected = false;
+                }
+                else {
+                    key.selected = true;
+                }
+                drawPiano();
+            }
+        });
+
+        if(!haveSelectedKey) {
+            whiteKeys.forEach(key => {
+                if(isIntersect(pos, key)) {
+                    if(key.selected) {
+                        key.selected = false;
+                    }
+                    else {
+                        key.selected = true;
+                    }
+                    drawPiano();
+                }
+            });
+        }
+        /*
         whiteKeys.forEach(key => {
             if(isIntersect(pos, key)) {
                 if(key.selected) {
@@ -59,7 +100,8 @@ function initPiano() {
                     drawPiano();
                 }
             }
-        })
+        });
+        */
     });
 
     drawPiano();
@@ -73,7 +115,7 @@ function drawPiano() {
 
         ctx.strokeStyle = "#000000";
         ctx.lineWidth = 4;
-        ctx.font = "16px Verdana";
+        ctx.font = "18px Verdana";
 
         whiteKeys.forEach(key => {
             ctx.strokeRect(key.x, key.y, key.width, key.height);
@@ -100,10 +142,10 @@ function drawPiano() {
 
             ctx.fillStyle = "#ffffff"
             ctx.fillText(key.note, key.x, key.y + (key.height / 1.5), key.width);
-        })
+        });
     }
 }
 
 function isIntersect(point, rect) {
-    return (point.x > rect.x && point.x < rect.x + rect.width) && (point.y > rect.y && point.y < rect.y + rect.height);
+    return (point.x >= rect.x && point.x <= rect.x + rect.width) && (point.y >= rect.y && point.y <= rect.y + rect.height);
 }
