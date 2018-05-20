@@ -8,6 +8,8 @@ const blackKeys = [];
 
 function initPiano() {
     var canvas = document.getElementById("piano");
+    canvas.width = pianoWidth;
+    canvas.height = pianoHeight
 
     if(whiteKeys.length == 0) {
         //Generate the values for the white keys
@@ -33,7 +35,6 @@ function initPiano() {
 
         whiteKeys.forEach(key => {
             if(isIntersect(pos, key)) {
-                console.log('cliked on a key');
                 if(key.selected) {
                     key.selected = false;
                     drawPiano();
