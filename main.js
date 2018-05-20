@@ -19,12 +19,10 @@ function drawPiano() {
             whiteKeys.push({ x: i, y: 0, width: keyWidth, height: pianoHeight });
         }
         //Generate the values for the black keys
-        for(var i = 0; i < numOctaves; i++) {        //number of octaves
-            for(var j = 0; j < 7; j++) {    //number of segments per octave
-                if(j != 0 && j != 3)        //no black key on the first or fourth edge (left of C and left of F)
-                    blackKeys.push({ x: (keyWidth * (j + (i * 7))) - (keyWidth / 4), y: 0, width: keyWidth / 2, height: pianoHeight / 2 });
-            }
-            
+        for(var i = 0; i < numOctaves * 7; i++) {
+            //no black key on the first or fourth edge (left of C and left of F)
+            if(i % 7 != 0 && i % 7 != 3)
+                blackKeys.push({ x: (keyWidth * i) - (keyWidth / 4), y: 0, width: keyWidth / 2, height: pianoHeight / 2 });
         }
 
         whiteKeys.forEach(key => {
