@@ -5,6 +5,8 @@ const keyWidth = pianoWidth / (numOctaves * 7);
 
 const whiteKeys = [];
 const blackKeys = [];
+const whiteNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+const blackNotes = ['', 'C#/Db', 'D#/Eb', '', 'F#/Gb', 'G#/Ab', 'A#/Bb'];
 
 function initPiano() {
     var canvas = document.getElementById("piano");
@@ -13,8 +15,8 @@ function initPiano() {
 
     if(whiteKeys.length == 0) {
         //Generate the values for the white keys
-        for(var i = 0; i < pianoWidth; i += keyWidth) {
-            whiteKeys.push({ x: i, y: 0, width: keyWidth, height: pianoHeight, selected: false });
+        for(var i = 0; i < numOctaves * 7; i++) {
+            whiteKeys.push({ x: i * keyWidth, y: 0, width: keyWidth, height: pianoHeight, selected: false, note: whiteNotes[i%7]})
         }
     }
 
@@ -23,7 +25,7 @@ function initPiano() {
         for(var i = 0; i < numOctaves * 7; i++) {
             //no black key on the first or fourth edge (left of C and left of F)
             if(i % 7 != 0 && i % 7 != 3)
-                blackKeys.push({ x: (keyWidth * i) - (keyWidth / 4), y: 0, width: keyWidth / 2, height: pianoHeight / 2, selected: false });
+                blackKeys.push({ x: (keyWidth * i) - (keyWidth / 4), y: 0, width: keyWidth / 2, height: pianoHeight / 2, selected: false, note: blackNotes[i%7] });
         }
     }
 
@@ -45,6 +47,19 @@ function initPiano() {
                 }
             }
         });
+
+        blackKeys.forEach(key => {
+            if(isIntersect(pos, key)) {
+                if(key.selected) {
+                    key.selected = false;
+                    drawPiano();
+                }
+                else {
+                    key.selected = true;
+                    drawPiano();
+                }
+            }
+        })
     });
 
     drawPiano();
@@ -57,6 +72,8 @@ function drawPiano() {
         var ctx = canvas.getContext('2d');
 
         ctx.strokeStyle = "#000000";
+        ctx.lineWidth = 4;
+        ctx.font = "16px Verdana";
 
         whiteKeys.forEach(key => {
             ctx.strokeRect(key.x, key.y, key.width, key.height);
@@ -67,11 +84,22 @@ function drawPiano() {
                 ctx.fillStyle = "#ffffff";
             }
             ctx.fillRect(key.x, key.y, key.width, key.height);
+
+            ctx.fillStyle = "#000000"
+            ctx.fillText(key.note, key.x + (key.width / 2.5), key.y + (key.height / 1.25), key.width);
         });
         blackKeys.forEach(key => {
             ctx.strokeRect(key.x, key.y, key.width, key.height);
-            ctx.fillStyle = "#000000";
+            if(key.selected) {
+                ctx.fillStyle = "#00ff00";
+            }
+            else {
+                ctx.fillStyle = "#000000";
+            }
             ctx.fillRect(key.x, key.y, key.width, key.height);
+
+            ctx.fillStyle = "#ffffff"
+            ctx.fillText(key.note, key.x, key.y + (key.height / 1.5), key.width);
         })
     }
 }
