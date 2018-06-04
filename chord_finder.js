@@ -12,15 +12,25 @@ const minor_seventh = 10;
 const major_seventh = 11;
 
 const chordTypes = {
-    'Major Triad' : [root, major_third, perfect_fifth],
-    'Minor Triad' : [root, minor_third, perfect_fifth],
+    'Maj' : [root, major_third, perfect_fifth],
+    'min' : [root, minor_third, perfect_fifth],
     'Diminished' : [root, minor_third, tritone],
     'Augmented' : [root, major_third, minor_sixth],
     'Sus2' : [root, major_second, perfect_fifth],
     'Sus4' : [root, perfect_fourth, perfect_fifth],
+    'add2' : [root, major_second, major_third, perfect_fifth],
+    '6' : [root, major_third, perfect_fifth, major_sixth],
+    '6/9' : [root, major_third, perfect_fifth, major_sixth, major_second],
     'Maj7' : [root, major_third, perfect_fifth, major_seventh],
     'Dominant 7th' : [root, major_third, perfect_fifth, minor_seventh],
-    'Min7' : [root, minor_third, perfect_fifth, minor_seventh]
+    'min7' : [root, minor_third, perfect_fifth, minor_seventh],
+    '7b5' : [root, major_third, tritone, minor_seventh],
+    '7#5' : [root, major_third, minor_sixth, minor_seventh],
+    'min9' : [root, minor_third, perfect_fifth, minor_seventh, major_second],
+    '9' : [root, major_third, perfect_fifth, minor_seventh, major_second],
+    'add9' : [root, major_third, perfect_fifth, major_second],
+    '11' : [root, major_third, perfect_fifth, minor_seventh, major_second, perfect_fourth],
+    '13' : [root, major_third, perfect_fifth, minor_seventh, major_second, perfect_fourth, major_sixth]
 }
 
 const notes = ['C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B'];
